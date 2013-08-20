@@ -10,12 +10,12 @@
     <meta name="description" content="JNP jQuery Notification Plugin for Twitter Bootstrap">
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/jnp.css">
-    <script src="js/libs/vendor/jquery/jquery.v1.9.1.min.js"></script>
-    <script src="js/libs/vendor/bootstrap/bootstrap.v2.3.1.min.js"></script>
-    <script src="js/libs/vendor/jquery/jquery.notification.js"></script>
+    <script src="js/libs/vendor/jquery/jquery.min.js"></script>
+    <script src="js/libs/vendor/bootstrap/bootstrap.min.js"></script>
+    <script src="../jquery.notification.js"></script>
 </head>
 <body id="demo-custom">
     <!--[if lt IE 7]>
@@ -50,25 +50,29 @@
       <div class="container">
           <div class="row-fluid">
             <p>This is the code implement in this demo: <br />
-              <code>$('#triangule').JNP({
-            &nbsp;&nbsp;bootstrap: false,
-            &nbsp;&nbsp;css: true,
-            &nbsp;&nbsp;id: 'triangule'
-            });
-          </code>
+              <pre><code>&lt;script&gt;
+var jnp = new $.jnp('#triangule-jnp', {
+  title: 'Warning!',
+  message: 'Change a lot with a custom css, are we?',
+  bootstrap: false,
+  css: true,
+  id: 'triangule'
+});
+&lt;/script&gt;</code></pre>
           </p>
           <p>To show custom sizes: <button type="button" class="btn btn-info" id="custom-btn">Click here</button></p>
           <p>
-          <code>
-            $('#custom').JNP({
-            &nbsp;&nbsp;clickOn: 'custom-btn',
-              &nbsp;&nbsp;inmediatly: false,
-              &nbsp;&nbsp;&nbsp;&nbsp;contextual: 'success',
-              &nbsp;&nbsp;height: 100,
-              &nbsp;&nbsp;width: 400,
-              &nbsp;&nbsp;id: 'customize'
-            });
-          </code>
+          <pre><code>&lt;script&gt;
+var jnp2 = new $.jnp('#triangule-jnp', {
+  message: 'Do you see all the alternatives that you can do?!',
+  clickOn: 'custom-btn',
+  inmediatly: false,
+  contextual: 'success',
+  height: 100,
+  width: 400,
+  id: 'customize'
+});
+&lt;/script&gt;</code></pre>
             </p>   
           </div>          
           <div class="row-fluid">
@@ -99,7 +103,7 @@
     </footer>
     <script>
       $(document).ready(function() {
-        $('#triangule-jnp').JNP({
+        var jnp = new $.jnp('#triangule-jnp', {
           title: 'Warning!',
           message: 'Change a lot with a custom css, are we?',
           bootstrap: false,
@@ -107,7 +111,7 @@
           id: 'triangule'
         });
 
-        $('#custom').JNP({
+        var jnp2 = new $.jnp('#custom', {
           message: 'Do you see all the alternatives that you can do?!',
           clickOn: 'custom-btn',
           inmediatly: false,
@@ -116,6 +120,7 @@
           width: 400,
           id: 'customize'
         });
+
       });
     </script>
     <script type="text/javascript">

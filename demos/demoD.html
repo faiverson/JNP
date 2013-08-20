@@ -10,11 +10,11 @@
     <meta name="description" content="JNP jQuery Notification Plugin for Twitter Bootstrap">
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="css/main.css">
-    <script src="js/libs/vendor/jquery/jquery.v1.9.1.min.js"></script>
-    <script src="js/libs/vendor/bootstrap/bootstrap.v2.3.1.min.js"></script>
-    <script src="js/libs/vendor/jquery/jquery.notification.min.js"></script>
+    <script src="js/libs/vendor/jquery/jquery.min.js"></script>
+    <script src="js/libs/vendor/bootstrap/bootstrap.min.js"></script>
+    <script src="../jquery.notification.js"></script>
 </head>
 <body id="demo">
     <!--[if lt IE 7]>
@@ -47,16 +47,19 @@
       <div class="container">
           <div class="row-fluid">
             <p>This is the code implement in this demo: br />
-              <code>$('#foo').JNP({
-            &nbsp;&nbsp;bootstrap: 'false', // it's not neccesary but it doesn't make too much sense if you want write your own css
-            &nbsp;&nbsp;title: 'My title',
-            &nbsp;&nbsp;message: 'This message will disappear in four seconds',
-            &nbsp;&nbsp;time: 2,
-            &nbsp;&nbsp;duration: 4,
-            &nbsp;&nbsp;closeBtn: false,
-            &nbsp;&nbsp;contextual: 'error'
-            });
-          </code>
+              <pre><code>&lt;script&gt;
+$(document).ready(function() {
+  var options = {
+    title: 'My title',
+    message: 'This message will disappear in four seconds',
+    time: 2,
+    duration: 4,
+    closeBtn: false,
+    contextual: 'error'
+  }
+  var jnp = new $.jnp('#foo', options);
+}
+&lt;/script&gt;</code></pre>
             </p>
           </div>
           <div id="foo"></div>
@@ -87,14 +90,15 @@
     </footer>
     <script>
       $(document).ready(function() {
-        $('#foo').JNP({
+        var options = {
           title: 'My title',
           message: 'This message will disappear in four seconds',
           time: 2,
           duration: 4,
           closeBtn: false,
           contextual: 'error'
-        });
+        }
+        var jnp = new $.jnp('#foo', options);
       });
     </script>
     <script type="text/javascript">

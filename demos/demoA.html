@@ -10,11 +10,11 @@
     <meta name="description" content="JNP jQuery Notification Plugin for Twitter Bootstrap">
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="css/main.css">
-    <script src="js/libs/vendor/jquery/jquery.v1.9.1.min.js"></script>
-    <script src="js/libs/vendor/bootstrap/bootstrap.v2.3.1.min.js"></script>
-    <script src="js/libs/vendor/jquery/jquery.notification.min.js"></script>
+    <script src="js/libs/vendor/jquery/jquery.min.js"></script>
+    <script src="js/libs/vendor/bootstrap/bootstrap.min.js"></script>
+    <script src="../jquery.notification.js"></script>
 </head>
 <body id="demo">
     <!--[if lt IE 7]>
@@ -46,8 +46,13 @@
       </header>
       <div class="container">
           <div class="row-fluid">
-            <p>This is the code implement in this demo: br />
-              <pre>&lt;script&gt;<br />&nbsp;&nbsp;$(document).ready(function() {<br />&nbsp;&nbsp;&nbsp;&nbsp;$('#foo').JNP();<br />&nbsp;&nbsp;});<br />&lt;/script&gt;</pre>
+            <p>This is the code implement in this demo: <br />
+              <pre><code>&lt;script&gt;
+$(document).ready(function() {
+  var jnp = new $.jnp();
+  var jnp2 = new $.jnp('#foo');
+}
+&lt;/script&gt;</code></pre>
             </p>
           </div>
           <div id="foo"></div>
@@ -78,8 +83,9 @@
     </footer>
     <script>
       $(document).ready(function() {
-        $('body').JNP();
-        $('#foo').JNP();
+        var jnp = new $.jnp(); // or new $.jnp('body');
+        var jnp2 = new $.jnp('#foo');
+
       });
     </script>
     <script type="text/javascript">

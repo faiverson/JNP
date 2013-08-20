@@ -17,8 +17,14 @@
     cursor: pointer;
     font-size: 22px;
 }
+
+.jnp-custom .jnp-title{
+    font-size:22px;
+    font-weight: bold;
+}
 .jnp-custom .jnp-wrapper{
-	background: rgba(240, 240, 240, 0.933333);
+	background: rgba(23, 170, 76, 0.933333);
+	color:white;
 	padding: 4px 35px 4px 12px;
 	margin-bottom: 20px;
 	text-shadow: 0 1px 0 rgba(255,255,255,0.5);

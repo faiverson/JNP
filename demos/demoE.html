@@ -10,11 +10,11 @@
     <meta name="description" content="JNP jQuery Notification Plugin for Twitter Bootstrap">
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="css/main.css">
-    <script src="js/libs/vendor/jquery/jquery.v1.9.1.min.js"></script>
-    <script src="js/libs/vendor/bootstrap/bootstrap.v2.3.1.min.js"></script>
-    <script src="js/libs/vendor/jquery/jquery.notification.min.js"></script>
+    <script src="js/libs/vendor/jquery/jquery.min.js"></script>
+    <script src="js/libs/vendor/bootstrap/bootstrap.min.js"></script>
+    <script src="../jquery.notification.js"></script>
 </head>
 <body id="demo">
     <!--[if lt IE 7]>
@@ -47,35 +47,42 @@
       <div class="container">
           <div class="row-fluid">
             <p>This is the code implement in this demo: <br />
-              <code>$('#foo').JNP({
-            &nbsp;&nbsp;contextual: 'success',
-            &nbsp;&nbsp;background: 'green',
-            &nbsp;&nbsp;opacity: 0.6,
-            &nbsp;&nbsp;position : 'fancy'
-            });
-          </code>
+              <pre><code>&lt;script&gt;
+var jnp = new $.jnp('#foo', {
+  title: 'My title',
+  message: 'There are 4 options. Custom element (default behaviour), top, bottom and this called fancy! <br /> <b>Bonus: </b>you can set the background color of the overlay and the opacity too',
+  contextual: 'success',
+  background: 'green',
+  opacity: 0.6,
+  position : 'fancy'
+});
+&lt;/script&gt;</code></pre>
           </p>
           <p>To show the notification at the TOP: <button type="button" class="btn btn-info" id="top-btn">Click here</button></p>
           <p>
-          <code>
-            $('body').JNP({
-            &nbsp;&nbsp;contextual: 'info',
-            &nbsp;&nbsp;&nbsp;&nbsp;clickOn: 'top-btn',
-            &nbsp;&nbsp;inmediatly: false,
-            &nbsp;&nbsp;position : 'top'
-            });
-          </code>
+          <pre><code>&lt;script&gt;
+var jnp2 = new $.jnp('body', {
+  title: 'My title',
+  message: 'You can see now the bottom position. With inmediatly in false and clickOn setted you can control when is rendered',
+  contextual: 'info',
+  clickOn: 'top-btn',
+  inmediatly: false,
+  position : 'top'
+});
+&lt;/script&gt;</code></pre>
           </p>
           <p>To show the notification at the BOTTOM: <button type="button" class="btn btn-info" id="bottom-btn">Click here</button></p>
           <p>
-          <code>
-            $('#foo').JNP({
-            &nbsp;&nbsp;contextual: 'success',
-            &nbsp;&nbsp;background: 'green',
-            &nbsp;&nbsp;opacity: 0.6,
-            &nbsp;&nbsp;position : 'fancy'
-            });
-          </code>
+          <pre><code>&lt;script&gt;
+var jnp3 = new $.jnp('#bottom', {
+  title: 'My title',
+  message: 'You can see now the bottom position. With inmediatly in false and clickOn setted you can control when is rendered. Also, you can see that this is using a element as container and still works!',
+  clickOn: 'bottom-btn',
+  inmediatly: false,
+  opacity: 0.1,
+  position : 'bottom'
+});
+&lt;/script&gt;</code></pre>
             </p>
           </div>
           <div id="foo"></div>
@@ -107,7 +114,8 @@
     </footer>
     <script>
       $(document).ready(function() {
-        $('#foo').JNP({
+        
+        var jnp = new $.jnp('#foo', {
           title: 'My title',
           message: 'There are 4 options. Custom element (default behaviour), top, bottom and this called fancy! <br /> <b>Bonus: </b>you can set the background color of the overlay and the opacity too',
           contextual: 'success',
@@ -115,8 +123,8 @@
           opacity: 0.6,
           position : 'fancy'
         });
-
-        $('body').JNP({
+        
+        var jnp2 = new $.jnp('body', {
           title: 'My title',
           message: 'You can see now the bottom position. With inmediatly in false and clickOn setted you can control when is rendered',
           contextual: 'info',
@@ -125,7 +133,7 @@
           position : 'top'
         });
 
-        $('#bottom').JNP({
+        var jnp3 = new $.jnp('#bottom', {
           title: 'My title',
           message: 'You can see now the bottom position. With inmediatly in false and clickOn setted you can control when is rendered. Also, you can see that this is using a element as container and still works!',
           clickOn: 'bottom-btn',
@@ -133,6 +141,10 @@
           opacity: 0.1,
           position : 'bottom'
         });
+
+        //jnp3.destroy();
+        //jnp3.close();
+        //jnp3.show();
       });
     </script>
     <script type="text/javascript">

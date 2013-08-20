@@ -10,12 +10,12 @@
     <meta name="description" content="JNP jQuery Notification Plugin for Twitter Bootstrap">
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/jnp.css">
-    <script src="js/libs/vendor/jquery/jquery.v1.9.1.min.js"></script>
-    <script src="js/libs/vendor/bootstrap/bootstrap.v2.3.1.min.js"></script>
-    <script src="js/libs/vendor/jquery/jquery.notification.min.js"></script>
+    <script src="js/libs/vendor/jquery/jquery.min.js"></script>
+    <script src="js/libs/vendor/bootstrap/bootstrap.min.js"></script>
+    <script src="../jquery.notification.js"></script>
 </head>
 <body id="demo">
     <!--[if lt IE 7]>
@@ -48,13 +48,17 @@
       <div class="container">
           <div class="row-fluid">
             <p>This is the code implement in this demo: br />
-              <code>$('#foo').JNP({
-            &nbsp;&nbsp;bootstrap: 'false', // it's not neccesary but it doesn't make too much sense if you want write your own css
-            &nbsp;&nbsp;title: 'My title',
-            &nbsp;&nbsp;closeBtn: true,
-            &nbsp;&nbsp;css: true
-            });
-          </code>
+              <pre><code>&lt;script&gt;
+$(document).ready(function() {
+  var options = {
+    title: 'My title',
+    css: true,
+    bootstrap: false, // it's not neccesary but it doesn't make too much sense if you want write your own css
+    closeBtn: true
+  }
+  var jnp = new $.jnp('#foo', options);
+}
+&lt;/script&gt;</code></pre>
             </p>
           </div>
           <div id="foo"></div>
@@ -85,12 +89,13 @@
     </footer>
     <script>
       $(document).ready(function() {
-        $('#foo').JNP({
+        var options = {
           title: 'My title',
           css: true,
           bootstrap: false, // it's not neccesary but it doesn't make too much sense if you want write your own css
           closeBtn: true
-        });
+        }
+        var jnp = new $.jnp('#foo', options);
       });
     </script>
     <script type="text/javascript">

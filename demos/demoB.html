@@ -10,11 +10,11 @@
     <meta name="description" content="JNP jQuery Notification Plugin for Twitter Bootstrap">
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="css/main.css">
-    <script src="js/libs/vendor/jquery/jquery.v1.9.1.min.js"></script>
-    <script src="js/libs/vendor/bootstrap/bootstrap.v2.3.1.min.js"></script>
-    <script src="js/libs/vendor/jquery/jquery.notification.min.js"></script>
+    <script src="js/libs/vendor/jquery/jquery.min.js"></script>
+    <script src="js/libs/vendor/bootstrap/bootstrap.min.js"></script>
+    <script src="../jquery.notification.js"></script>
 </head>
 <body id="demo">
     <!--[if lt IE 7]>
@@ -47,12 +47,17 @@
       <div class="container">
           <div class="row-fluid">
             <p>This is the code implement in this demo: br />
-              <code>$('#foo').JNP({
-            &nbsp;&nbsp;bootstrap: 'false',
-            &nbsp;&nbsp;title: 'My title',
-            &nbsp;&nbsp;closeBtn: true, // yep, accept boolean and string also
-            });
-          </code>
+              <pre><code>&lt;script&gt;
+$(document).ready(function() {
+  var options = {
+    bootstrap: 'false',
+    title: 'My title',
+    message: 'You can writte whatever you want here',
+    closeBtn: true
+  }
+  var jnp = new $.jnp('#foo', options);
+}
+&lt;/script&gt;</code></pre>
             </p>
           </div>
           <div id="foo"></div>
@@ -83,12 +88,13 @@
     </footer>
     <script>
       $(document).ready(function() {
-        $('#foo').JNP({
+        var options = {
           bootstrap: 'false',
           title: 'My title',
           message: 'You can writte whatever you want here',
           closeBtn: true
-        });
+        }
+        var jnp = new $.jnp('#foo', options);
       });
     </script>
     <script type="text/javascript">
