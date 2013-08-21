@@ -34,7 +34,7 @@
             opacity: .8, // values from 0 to 1
             css: false, // False to use plugin css, true to use your own css
             clickOn: null, // element DOM that fires the renderization
-            contextual: 'warning', // Values: [success, error, info, warning]
+            contextual: 'warning', // Values: [success, danger, info, warning]
             position : 'wrapper', // Values: [wrapper, top, bottom, fancy]
             time: 0, // in seconds. Use it only when we don't want a inmediatly renderization
             duration: 0, // in seconds Ust it if you want the message disappear automatically
@@ -74,18 +74,31 @@
             }
         }
 
+        /**
+         * Set the title
+         * @param {title} string
+         */
         jnp.setTitle = function(title) {
             jnp.options.title = (typeof(title) == 'string') ? title : null;
             jnp.$html.child.title.text(jnp.options.title);
             setOverlay();
         }
 
+        /**
+         * Set the message
+         * @param {message} string
+         */
         jnp.setMessage = function(message) {
             jnp.options.message = message;
             jnp.$html.child.message.html(jnp.options.message);
             setOverlay();
         }
 
+        /**
+         * Set the title and message
+         * @param {title} string
+         * @param {message} string
+         */
         jnp.setContent = function(title, message) {
             jnp.options.title = (typeof(title) == 'string') ? title : null;
             jnp.options.message = message;
@@ -94,18 +107,27 @@
             setOverlay();
         }
 
+        /**
+         * Close the player (hide)
+         */
         jnp.close = function() {
             if(jnp.options.position != 'wrapper')
                 jnp.$overlay.hide();
             jnp.$wrapper.hide();
         }
 
+        /**
+         * Show the player
+         */
         jnp.show = function() {
             if(jnp.options.position != 'wrapper')
                 jnp.$overlay.show();
             jnp.$wrapper.show();
         }
 
+        /**
+         * Render the player
+         */
         jnp.render = function() {
             if(!jnp.options.inmediatly) {
                 render();
@@ -129,7 +151,7 @@
             jnp.options.css = setToBoolean(jnp.options.css);
             jnp.options.inmediatly = setToBoolean(jnp.options.inmediatly);
             jnp.options.contextual = jnp.options.contextual.toLowerCase();
-            jnp.options.contextual = $.inArray(jnp.options.contextual, ['warning', 'success', 'error', 'info']) ? jnp.options.contextual : 'warning';
+            jnp.options.contextual = $.inArray(jnp.options.contextual, ['warning', 'success', 'danger', 'info']) ? jnp.options.contextual : 'warning';
             jnp.options.position = jnp.options.position.toLowerCase();
             jnp.options.position = $.inArray(jnp.options.position, ['wrapper', 'top', 'bottom', 'fancy']) ? jnp.options.position : 'wrapper';
             jnp.options.opacity = parseFloat(jnp.options.opacity);
@@ -223,7 +245,7 @@
         var setEvents = function() {            
             // events to close fancy notification
             if (jnp.$overlay) {
-                jnp.$overlay.one({
+                jnp.$overlay.on({
                     click: function() {
                         jnp.$overlay.fadeOut('slow', function() {
                             jnp.$overlay.hide();
@@ -234,7 +256,7 @@
                     }                    
                 });
                 if (jnp.options.closeBtn) {
-                    jnp.$html.child.close.one({
+                    jnp.$html.child.close.on({
                         click: function() {
                             jnp.$overlay.fadeOut('slow', function() {
                                 jnp.$overlay.hide();

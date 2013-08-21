@@ -47,7 +47,11 @@
       <div class="container">
           <div class="row-fluid">
             <p>This is the code implement in this demo: <br />
-              <pre><code>&lt;script&gt;
+              <p>To show the notification at the TOP: <button type="button" class="btn btn-info" id="top-btn">Click here</button></p>
+              <p>To show the first (green) notification again: <button type="button" class="btn btn-info" id="fancy-btn">Click here</button></p>
+              <p>To show the notification at the BOTTOM: <button type="button" class="btn btn-info" id="bottom-btn">Click here</button></p>
+          
+          <pre><code>&lt;script&gt;
 var jnp = new $.jnp('#foo', {
   title: 'My title',
   message: 'There are 4 options. Custom element (default behaviour), top, bottom and this called fancy! <br /> <b>Bonus: </b>you can set the background color of the overlay and the opacity too',
@@ -58,7 +62,6 @@ var jnp = new $.jnp('#foo', {
 });
 &lt;/script&gt;</code></pre>
           </p>
-          <p>To show the notification at the TOP: <button type="button" class="btn btn-info" id="top-btn">Click here</button></p>
           <p>
           <pre><code>&lt;script&gt;
 var jnp2 = new $.jnp('body', {
@@ -71,7 +74,6 @@ var jnp2 = new $.jnp('body', {
 });
 &lt;/script&gt;</code></pre>
           </p>
-          <p>To show the notification at the BOTTOM: <button type="button" class="btn btn-info" id="bottom-btn">Click here</button></p>
           <p>
           <pre><code>&lt;script&gt;
 var jnp3 = new $.jnp('#bottom', {
@@ -142,9 +144,10 @@ var jnp3 = new $.jnp('#bottom', {
           position : 'bottom'
         });
 
-        //jnp3.destroy();
-        //jnp3.close();
-        //jnp3.show();
+        $('#fancy-btn').click(function () {
+          jnp.show();
+        });
+
       });
     </script>
     <script type="text/javascript">
