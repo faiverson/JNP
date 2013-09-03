@@ -1,9 +1,9 @@
-# [JNP Plugin]
+# JNP Plugin
 ## What is this for?
 JNP jQuery Notification Plugin for Twitter Bootstrap is a plugin built in jQuery for use in your website if you need notifications messages. There are several configuration to make yor own notification or use a pre render.
 
 ## Quick start
-Add bootstrap library (js and css) from here: http://twitter.github.com/bootstrap/
+Add bootstrap library (js and css) from here: http://twitter.github.com/bootstrap/ <br />
 Add jQuery library from here: http://jquery.com/download/
 Add the plugin jquery.notification
 Initializate the plugin: <code>$('body').JNP();</code>
@@ -17,4 +17,4 @@ That is it!
 * You can choose make it dissapear after a while.
 
 ## More Information
-If you need more information, you can find the documentation and examples on the website http://www.jnp-plugin.com.ar
+If you need more information, you can find the documentation and examples on the website <br />http://www.jnp-plugin.com.ar
