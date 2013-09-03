@@ -1,7 +1,7 @@
 /*==================================================
   styles
   ==================================================*/
-.jnp-custom.jnp-overlay{
+.jnp-custom .jnp-overlay{
 	padding: 10px 0px;
 	height: 80px;
 	width: 1170px;
@@ -12,15 +12,17 @@
 }
 .jnp-custom .jnp-close{
 	position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 5px;
+    right: 5px;
     cursor: pointer;
     font-size: 22px;
+    line-height: 20px;
 }
 
 .jnp-custom .jnp-title{
     font-size:22px;
     font-weight: bold;
+    margin: 5px auto;
 }
 .jnp-custom .jnp-wrapper{
 	background: rgba(23, 170, 76, 0.933333);
@@ -38,9 +40,9 @@
 #triangule .jnp-wrapper{
 	background: transparent;
 	border: none;
-	left: -70px;
-	top: 90px;
-	width: 150px;
+	left: -65px;
+	top: 45px;
+	width: 180px;
 }
 
 #triangule h5{
@@ -50,11 +52,11 @@
 }
 
 #triangule .jnp-close{
-	top: 38px;
+	top: 72px;
 	right: 0px;
 }
 
-#triangule.jnp-wrapper-position{
+#triangule {
 	width: 0px;
 	height: 0px;
 	border-left: 150px solid transparent;

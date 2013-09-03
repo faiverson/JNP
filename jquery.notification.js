@@ -2,6 +2,7 @@
  *  Project: JNP - jQuery Notification Plugin for Twitter Bootstrap
  *  Description: A notification messages for use with twitter bootstrap
  *  Author: Fabian Torres
+ *  Version: 2.1.0
  *  License: The MIT License (MIT)
  *
  * Copyright (c) <2013> <copyright Fabian Torres>
@@ -13,7 +14,7 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  
-*med * The above copyright notice and this permission notice shall be included in
+ * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
@@ -37,14 +38,15 @@
             contextual: 'warning', // Values: [success, danger, info, warning]
             position : 'wrapper', // Values: [wrapper, top, bottom, fancy]
             time: 0, // in seconds. Use it only when we don't want a inmediatly renderization
-            duration: 0, // in seconds Ust it if you want the message disappear automatically
+            duration: 0, // in seconds it if you want the message disappear automatically
             title: null, // title to show (Null if you don't want a title)
             message: 'Notification message here!', // message to show
             inmediatly: true, // to render in the initiation use true, instead use false and render function
             height: null, // wrapper height
             width: null, // wrapper width
             closeBtn: true, // To use a btn close or not
-            id: null //add a id element to the wrapper
+            id: null, //add a id element to the wrapper
+            prefix: 'jnp' // prefix used in each css class
         };
 
         var jnp = this; // reference to the object
@@ -55,24 +57,18 @@
             jnp.element = element ? element : 'body';    // reference to the actual DOM element        
             jnp.$el = $(jnp.element); // reference to the jQuery version of DOM element
             jnp.options = $.fn.extend(true, {}, defaults, options);
-            jnp._defaults = defaults;
-            jnp._name = "JNP";
-            jnp._css = jnp._name.toLowerCase(); // css prefix
+            jnp._defaults = defaults;            
             setOptions();
             draw();
+            
             if(jnp.options.inmediatly) {
                 render();
             }
-            else if(jnp.options.time > 0) {
-                var interval = window.setInterval(function() {
-                    render();
-                    window.clearInterval(interval);
-                }, jnp.options.time);
-            }
+
             if(jnp.options.clickOn){
                 renderLater();
             }
-        }
+        }        
 
         /**
          * Set the title
@@ -80,8 +76,9 @@
          */
         jnp.setTitle = function(title) {
             jnp.options.title = (typeof(title) == 'string') ? title : null;
+            if(!jnp.$html.child.title.is(':visible'))
+                jnp.$html.child.title.show();
             jnp.$html.child.title.text(jnp.options.title);
-            setOverlay();
         }
 
         /**
@@ -91,7 +88,6 @@
         jnp.setMessage = function(message) {
             jnp.options.message = message;
             jnp.$html.child.message.html(jnp.options.message);
-            setOverlay();
         }
 
         /**
@@ -102,27 +98,50 @@
         jnp.setContent = function(title, message) {
             jnp.options.title = (typeof(title) == 'string') ? title : null;
             jnp.options.message = message;
+            if(!jnp.$html.child.title.is(':visible'))
+                jnp.$html.child.title.show();
             jnp.$html.child.title.text(jnp.options.title);
             jnp.$html.child.message.html(jnp.options.message);
-            setOverlay();
+        }
+
+        /**
+         * Set background of the overlay
+         * @param {title} string
+         */
+        jnp.setWrapperCSS = function(css) {
+            jnp.$html.container.css(css);
+        }
+
+        /**
+         * Set background of the overlay
+         * @param {title} string
+         */
+        jnp.setBackground = function(color) {
+            jnp.options.background = (typeof(color) == 'string') ? color : jnp.options.background;            
+            jnp.$overlay.css({ 'background': jnp.options.background });
+        }
+
+        /**
+         * Set background of the overlay
+         * @param {title} string
+         */
+        jnp.setOpacity = function(opacity) {
+            jnp.options.opacity = (typeof(opacity) == 'number') ? parseFloat(opacity) : jnp.options.opacity;            
+            jnp.$overlay.css({ 'opacity': jnp.options.opacity });
         }
 
         /**
          * Close the player (hide)
          */
         jnp.close = function() {
-            if(jnp.options.position != 'wrapper')
-                jnp.$overlay.hide();
-            jnp.$wrapper.hide();
+            jnp.$container.hide();
         }
 
         /**
          * Show the player
          */
         jnp.show = function() {
-            if(jnp.options.position != 'wrapper')
-                jnp.$overlay.show();
-            jnp.$wrapper.show();
+            jnp.$container.show();
         }
 
         /**
@@ -137,16 +156,15 @@
             }
         }
 
-        jnp.destroy = function() {
-            if(jnp.options.position != 'wrapper')
-                jnp.$overlay.remove();
-            jnp.$wrapper.remove();
+        jnp.destroy = function() {            
+            jnp.$container.remove();
         }
 
         /**
          * Avoid ugly parameters
          */
         var setOptions = function() {
+            jnp._css = typeof(jnp.options.prefix) == 'string' ? jnp.options.prefix.toLowerCase() : 'jnp';
             jnp.options.bootstrap = setToBoolean(jnp.options.bootstrap);
             jnp.options.css = setToBoolean(jnp.options.css);
             jnp.options.inmediatly = setToBoolean(jnp.options.inmediatly);
@@ -198,45 +216,43 @@
                 jnp.$el = $('<div />').addClass(jnp._css + '-virtual-element');
                 $('body').prepend(jnp.$el);
             }
-            if (jnp.options.bootstrap)
-                buildBootstrap();
-            else
-                buildDOM();            
+            jnp.$container = $('<div />').addClass(jnp._css + '-container');            
+            (jnp.options.bootstrap) ? buildBootstrap() : buildDOM();
             if (!jnp.options.bootstrap && !jnp.options.css)
                 addStyles();
             setPlace();
-            drawOverlay();            
+            drawOverlay();
+            jnp.$container.hide();
         }
 
         /**
          * Set a overlay layer
          */
         var drawOverlay = function() {
-            jnp.$overlay = $('<div />').addClass(jnp._css + '-overlay');
+            jnp.$overlay = $('<div />').addClass(jnp._css + '-overlay');            
             jnp.$overlay.css({
                 'position': 'absolute',
-                'z-index': '9998',
-                'display': 'none',
+                'z-index': '999998',
                 'left': 0,
                 'top': jnp.options.position == 'bottom' ?  'auto' : 0,
                 'bottom': jnp.options.position == 'bottom' ?  0 : 'auto'
             });
             if(!jnp.options.css) {
-                jnp.$overlay.css({
-                    'padding': jnp.options.position == 'fancy' ? 0 : '10px 0px',
+                jnp.$overlay.css({                    
                     'height': (jnp.options.position == 'fancy') ? '100%' : jnp.$wrapper.height(),
+                    'padding': jnp.options.position == 'fancy' ? 0 : '10px 0px',
+                    '-webkit-box-sizing': 'content-box', /* Safari/Chrome, other WebKit */
+                    '-moz-box-sizing': 'content-box',    /* Firefox, other Gecko */
+                    'box-sizing': 'content-box',         /* Opera/IE 8+ */
                     'width': '100%',
                     'background-color': jnp.options.background,
                     'opacity': jnp.options.opacity,
                 });
-                if((jnp.options.position != 'fancy'))
-                    //It retains only leading numbers and discards all the rest. -> parseInt(string, radix)
-                    jnp.$overlay.height(jnp.$overlay.height() + parseInt(jnp.$overlay.css('padding-top'), 10) + parseInt(jnp.$overlay.css('padding-bottom'), 10));
-            }           
+            }
             
-            $('body').prepend(jnp.$overlay);
-            if(jnp.options.css)
-                jnp.$overlay.addClass(jnp._css + '-custom');
+            jnp.$container.prepend(jnp.$overlay);
+            if(jnp.options.position == 'wrapper')
+                jnp.$overlay.hide();
         }
 
         /**
@@ -247,22 +263,16 @@
             if (jnp.$overlay) {
                 jnp.$overlay.on({
                     click: function() {
-                        jnp.$overlay.fadeOut('slow', function() {
-                            jnp.$overlay.hide();
-                        });
-                        jnp.$wrapper.fadeOut('slow', function() {
-                            jnp.$wrapper.hide();
+                        jnp.$container.fadeOut('slow', function() {
+                            jnp.$container.hide();
                         });
                     }                    
                 });
                 if (jnp.options.closeBtn) {
                     jnp.$html.child.close.on({
                         click: function() {
-                            jnp.$overlay.fadeOut('slow', function() {
-                                jnp.$overlay.hide();
-                            });
-                            jnp.$wrapper.fadeOut('slow', function() {
-                                jnp.$wrapper.hide();
+                            jnp.$container.fadeOut('slow', function() {
+                                jnp.$container.hide();
                             });
                         }                    
                     });
@@ -271,9 +281,7 @@
 
             if(jnp.options.duration > 0) {
                 var interval = window.setInterval(function() {
-                    jnp.$overlay.trigger('click');
-                    if (jnp.options.closeBtn)
-                        jnp.$html.child.close.trigger('click');
+                    jnp.$container.hide();
                     window.clearInterval(interval);
                 }, jnp.options.duration);
             }
@@ -282,93 +290,95 @@
         /**
          *  Set where the notification bar is showed
          */
-        var setPlace = function() {
+        var setPlace = function() {            
             jnp.$wrapper = $('<div />').addClass(jnp._css + '-wrapper-position');
             if(jnp.options.css)
-                jnp.$wrapper.addClass(jnp._css + '-custom');
+                jnp.$container.addClass(jnp._css + '-custom');
             if(jnp.options.id != null)
-                jnp.$wrapper.attr('id', jnp.options.id);
+                jnp.$container.attr('id', jnp.options.id);
             switch(jnp.options.position) {
                 case 'top':
                     jnp.$wrapper.css({
                         'position': 'absolute',
-                        'z-index': '9999',
+                        'z-index': '999999',
                         'top': 10,
                         'height': jnp.options.height,
                         'width': jnp.options.width,
                     });
-                    jnp.$html.container.css({'margin': 0});
-                    $('body').prepend(jnp.$wrapper);
+                    jnp.$html.container.css({'margin': 0});                    
+                    $('body').prepend(jnp.$container);
+                    jnp.$container.append(jnp.$wrapper);
                     jnp.$wrapper.prepend(jnp.$el);
                     // we dont put all in the same call because position change the context
                     jnp.$wrapper.css({
-                        'left': (window.innerWidth - jnp.$el.outerWidth()) / 2,
-                        'display': 'none'
+                        'left': (window.innerWidth - jnp.$el.outerWidth()) / 2
                     });
                     break;
                 case 'bottom':
                     jnp.$wrapper.css({
                         'position': 'absolute',
-                        'z-index': '9998',
+                        'z-index': '999998',
                         'bottom': 10,
                         'margin-bottom': 0,
                         'height': jnp.options.height,
                         'width': jnp.options.width,
                     });
                     jnp.$html.container.css({'margin': 0});
-                    $('body').prepend(jnp.$wrapper);
+                    $('body').prepend(jnp.$container);
+                    jnp.$container.append(jnp.$wrapper);
                     jnp.$wrapper.prepend(jnp.$el);
                     // we dont put all in the same call because position change the context
                     jnp.$wrapper.css({
-                        'left': (window.document.width - jnp.$el.outerWidth()) / 2,
-                        'display': 'none'
+                        'left': (window.document.width - jnp.$el.outerWidth()) / 2
                     });
                     break;
-                case 'fancy':
-                    jnp.$overlay = $('<div />').addClass(jnp._css + '-overlay');
-                    jnp.$overlay.css({
-                        'position': 'absolute',
-                        'z-index': '9998',
-                        'top': 0,
-                        'left': 0,
-                        'height': '100%',
-                        'width': '100%',
-                        'background-color': jnp.options.background,
-                        'opacity': jnp.options.opacity,
-                    });
+                case 'fancy':                    
                     jnp.$wrapper.height(jnp.options.height).width(jnp.options.width);
-                    $('body').prepend(jnp.$wrapper);                    
+                    $('body').prepend(jnp.$container);
+                    jnp.$container.append(jnp.$wrapper);                 
                     jnp.$wrapper.prepend(jnp.$el);
                     jnp.$wrapper.css({
                         'position': 'absolute',
-                        'z-index': '9999',
+                        'z-index': '999999',
                         'height': jnp.options.height,
                         'width': jnp.options.width,
                     });
                     // we dont put all in the same call because position change the context                    
                     jnp.$wrapper.css({
                         'top': (window.innerHeight - jnp.$wrapper.outerHeight()) / 2,
-                        'left': (window.innerWidth - jnp.$wrapper.outerWidth()) / 2,
-                        'display': 'none'
+                        'left': (window.innerWidth - jnp.$wrapper.outerWidth()) / 2
                     });
                     break;
-                default:                    
+                default:
+                    jnp.$wrapper.css({
+                        'position': 'relative',
+                        'z-index': '999999',
+                        '-webkit-box-sizing': 'content-box', /* Safari/Chrome, other WebKit */
+                        '-moz-box-sizing': 'content-box',    /* Firefox, other Gecko */
+                        'box-sizing': 'content-box',  
+                    });
+
                     //insert the element checking the position in the DOM
                     if(jnp.$el.siblings().length > 1 && jnp.$el.index() > 0) {
                         var pos = jnp.$el.index() - 1;
-                        jnp.$el.siblings().eq(pos).after(jnp.$wrapper);
-                        jnp.$wrapper.prepend(jnp.$el).hide();
+                        jnp.$el.siblings().eq(pos).after(jnp.$container);
+                        jnp.$container.append(jnp.$wrapper);
+                        jnp.$wrapper.prepend(jnp.$el);
                     }
                     else {
-                        jnp.$el.parent().prepend(jnp.$wrapper);                        
+                        jnp.$el.parent().prepend(jnp.$container);
+                        jnp.$container.append(jnp.$wrapper);
+                        jnp.$wrapper.append(jnp.$el);
                     }
-                    jnp.$wrapper.prepend(jnp.$el).hide();
-                    
-                    if(jnp.options.height != 'auto')
-                        jnp.$html.container.height(jnp.options.height);
 
-                    if(jnp.options.width != 'auto')
+                    if(jnp.options.height != 'auto') {
+                        jnp.$html.container.height(jnp.options.height);
+                    }
+
+                    if(jnp.options.width != 'auto') {
                         jnp.$html.container.width(jnp.options.width);
+                    }
+                    
                     break;
             }
         }
@@ -396,9 +406,12 @@
                 jnp.$html.container.append(jnp.$html.child.close);
             }
             if(jnp.options.title != null && jnp.options.title != '') {
-                jnp.$html.child.title.append(jnp.options.title);
-                jnp.$html.container.append(jnp.$html.child.title);
+                jnp.$html.child.title.append(jnp.options.title);                
             }
+            else {
+                jnp.$html.child.title.hide();
+            }
+            jnp.$html.container.append(jnp.$html.child.title);
             jnp.$html.child.message.append(jnp.options.message);
             jnp.$html.container.append(jnp.$html.child.message);
         }
@@ -412,20 +425,24 @@
                 child: {
                     close: $('<div />').addClass(jnp._css + '-close'),
                     title: $('<h1 />').addClass(jnp._css + '-title'),
-                    text: $('<p />').addClass(jnp._css + '-content').text(jnp.options.message),
+                    message: $('<p />').addClass(jnp._css + '-content').text(jnp.options.message),
                 }
             }
 
             jnp.$el.prepend(jnp.$html.container);
+            
             if(jnp.options.closeBtn) {
                 jnp.$html.child.close.html('&times;');
                 jnp.$html.container.append(jnp.$html.child.close);
             }
             if(jnp.options.title != null && jnp.options.title != '') {
                 jnp.$html.child.title.append(jnp.options.title);
-                jnp.$html.container.append(jnp.$html.child.title);
             }
-            jnp.$html.container.append(jnp.$html.child.text);
+            else {
+                jnp.$html.child.title.hide();
+            }
+            jnp.$html.container.append(jnp.$html.child.title);
+            jnp.$html.container.append(jnp.$html.child.message);
         }
 
         /**
@@ -435,7 +452,6 @@
             jnp.$html.container.css({
                 'background': 'rgba(211, 209, 209, 0.933333)',
                 'padding': '4px 35px 4px 12px',
-                'margin-bottom': '20px',
                 'text-shadow': '0 1px 0 rgba(255,255,255,0.5)',
                 'border': '1px solid rgba(197, 197, 197, 0.95)',
                 '-webkit-border-radius': '4px',
@@ -445,10 +461,11 @@
             if(jnp.options.closeBtn) {
                 jnp.$html.child.close.css({
                     'position': 'absolute',
-                    'top': '10px',
-                    'right': '10px',
+                    'top': '5px',
+                    'right': '5px',
                     'cursor': 'pointer',
-                    'font-size': '22px'
+                    'font-size': '22px',
+                    'line-height': '20px'
                 });
             }            
         }
@@ -457,10 +474,12 @@
          * Render the html code hidden
          */
         var render = function() {
-            setEvents();
-            if(jnp.options.position != 'wrapper')
-                jnp.$overlay.show();
-            jnp.$wrapper.show();
+            var interval = window.setInterval(function() {
+                setEvents();
+                jnp.$container.show('slow');
+                window.clearInterval(interval);
+            }, jnp.options.time);
+            
         }
 
         /**
@@ -472,15 +491,6 @@
                     render();
                 }                    
             });
-        }
-
-        /**
-         * We check the overlay after we change the message
-         */
-        var setOverlay = function () {
-            if((jnp.options.position != 'fancy'))
-                //It retains only leading numbers and discards all the rest. -> parseInt(string, radix)
-                jnp.$overlay.height(jnp.$overlay.height() + parseInt(jnp.$overlay.css('padding-top'), 10) + parseInt(jnp.$overlay.css('padding-bottom'), 10));
         }
 
         return init(element, options);
@@ -504,9 +514,8 @@
                     // store a reference to the plugin object
                     // you can later access the plugin and its methods and properties like
                     // element.data('pluginName').publicMethod(arg1, arg2, ... argn) or
-                    // element.data('pluginName').settings.propertyName
+                    // element.data('pluginName').options.propertyName
                     $(this).data("jnp", jnp);
-
                 }
                 else {
                     $.error("Method " +  options + " does not exist in jQuery.jnp");
